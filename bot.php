@@ -34,13 +34,12 @@ $list = array(
 //    echo "tweet NG!: {$e->getMessage()}\n";
 //}
 
-$file="keyword/keyword.txt";
+$file="/home/kusanagi/kusanagi_html/DocumentRoot/tw_bot/keyword/keyword.txt";
 if ($file) {
   $key = file_get_contents($file);
 #  $key = htmlspecialchars($text, ENT_NOQUOTES);
 } else {
-  $key="コワーキング OR ベンチャー OR フリーランス OR \"起業 失敗\" OR エンジニア OR デザイナー OR \"地方創生 コミュニティ\" OR インキュベーション OR オープンイノベーション OR ビジネスモデル OR 新サービス OR AI OR 人工知能 OR VR OR ロ
-        ボット";
+  $key="コワーキング OR ベンチャー OR フリーランス OR \"起業 失敗\" OR エンジニア OR デザイナー OR \"地方創生 コミュニティ\" OR インキュベーション OR オープンイノベーション OR ビジネスモデル OR 新サービス OR AI OR 人工知能 OR VR OR ロボット";
 }
 
 //オプション設定
