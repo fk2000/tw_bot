@@ -33,7 +33,15 @@ $list = array(
 //    header($header, true, $e->getCode() ?: 500);
 //    echo "tweet NG!: {$e->getMessage()}\n";
 //}
-$key = "コワーキング OR スタートアップ OR ベンチャー";
+
+$file="keyword/keyword.txt";
+if ($file) {
+  $key = file_get_contents($file);
+#  $key = htmlspecialchars($text, ENT_NOQUOTES);
+} else {
+  $key="コワーキング OR ベンチャー OR フリーランス OR \"起業 失敗\" OR エンジニア OR デザイナー OR \"地方創生 コミュニティ\" OR インキュベーション OR オープンイノベーション OR ビジネスモデル OR 新サービス OR AI OR 人工知能 OR VR OR ロ
+        ボット";
+}
 
 //オプション設定
 $options = array('q'=>$key,'count'=>'1','lang'=>'ja');
@@ -51,11 +59,13 @@ foreach ($jset['statuses'] as $result) {
     $id = $result['id'];
 }
 //公式RT投稿
-echo $twObj->OAuthRequest(
-    'https://api.twitter.com/1.1/statuses/retweet/'.$id.'.json',
-    'POST',
-    array()
-);
+if(isset($id)) {
+    echo $twObj->OAuthRequest(
+        'https://api.twitter.com/1.1/statuses/retweet/'.$id.'.json',
+        'POST',
+        array()
+    );
+}
 
 //log
 function toLog($str){
