@@ -5,6 +5,9 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 require_once('apiconfig.php');
 
+include_once '/home/kusanagi/kusanagi_html/DocumentRoot/slackbot/SlackBot.php';
+include_once '/home/kusanagi/kusanagi_html/DocumentRoot/slackbot/SlackBotInfo.php';
+
 $consumer_key = API_KEY;
 $consumer_secret = API_SECRET;
 $access_token = ACCESS_TOKEN;
@@ -52,10 +55,19 @@ $json = $twObj->OAuthRequest(
     'GET',
     $options
 );
+
+//もらったjsonを連想配列に変換
 $jset = json_decode($json, true);
+
 //tweetidを取得
 foreach ($jset['statuses'] as $result) {
     $id = $result['id'];
+	$name = $result['user']['name'];
+	$userid = $result['user']['id'];
+	$link = $result['user']['profile_image_url'];
+	$content = $result['text'];
+	$updated = $result['created_at'];
+	$time = $time = date("Y-m-d H:i:s",strtotime($updated));
 }
 //公式RT投稿
 if(isset($id)) {
@@ -65,6 +77,27 @@ if(isset($id)) {
         array()
     );
 }
+
+$url = 'https://hooks.slack.com/services/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';
+
+$message = $jset['statuses'][0]['text'] ;
+//$screen_name = $jset->statuses->user->screen_name;
+//$id_str = $jset->statuses->user->id_str;
+$org_tweet = 'https://twitter.com/'.$userid.'/status/'.$id;
+#$data = $link;
+$data = " [".$org_tweet."] ";
+#$data .= $message;
+
+// ポスト情報を生成
+$info = new SlackBotInfo($url, $data);
+// こんな感じにパラメータを変更
+$info->channel = '#bot';
+$info->username = 'twitter';
+$info->icon_emoji = ':twitter:';
+
+// メッセージをポスト
+$bot = new SlackBot();
+$bot->post_message($info);
 
 //log
 function toLog($str){
@@ -78,7 +111,7 @@ function array_toLog($array_str){
     $filename = "log.txt";
     $fp = fopen($filename,"a");
     foreach($array_str as $a){
-    fputs($fp,$a."\n");
+        fputs($fp,$a."\n");
     }
-    fclose($fp);
 }
+
