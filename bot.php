@@ -77,7 +77,8 @@ if(isset($id)) {
         array()
     );
 
-    $url = 'https://hooks.slack.com/services/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';
+#    $url = 'https://hooks.slack.com/services/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';
+    $url = 'https://hooks.slack.com/services/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';
 
     $message = $jset['statuses'][0]['text'] ;
     //$screen_name = $jset->statuses->user->screen_name;
@@ -90,7 +91,8 @@ if(isset($id)) {
     // ポスト情報を生成
     $info = new SlackBotInfo($url, $data);
     // こんな感じにパラメータを変更
-    $info->channel = '#bot';
+#    $info->channel = '#bot';
+    $info->channel = '#times_fujiken';
     $info->username = 'twitter';
     $info->icon_emoji = ':twitter:';
 
